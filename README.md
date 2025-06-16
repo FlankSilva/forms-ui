@@ -40,6 +40,25 @@ public/
       checked.webp
       error.webp
       arrow.webp
+    css/
+      form.css
+    scripts/
+      form.js
+      form.min.js
+```
+
+### Incluindo os Assets
+
+Adicione os seguintes arquivos no seu HTML:
+
+```html
+<!-- CSS -->
+<link rel="stylesheet" href="/assets/css/form.css" />
+
+<!-- JavaScript -->
+<script src="/assets/scripts/form.js"></script>
+<!-- ou use a versão minificada -->
+<script src="/assets/scripts/form.min.js"></script>
 ```
 
 ## Início Rápido
@@ -57,30 +76,40 @@ formUI\configure([
 
 // Exemplo de formulário básico
 ?>
-<form>
-    <?php
-    // Input de texto
-    formUI\Input([
-        'id' => 'nome',
-        'placeholder' => 'Digite seu nome',
-        'typeValidate' => 'text',
-        'typeInput' => 'text'
-    ]);
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulário Exemplo</title>
+    <link rel="stylesheet" href="/assets/css/form.css">
+</head>
+<body>
+    <form>
+        <?php
+        // Input de texto
+        formUI\Input([
+            'id' => 'nome',
+            'placeholder' => 'Digite seu nome',
+            'typeValidate' => 'text',
+            'typeInput' => 'text'
+        ]);
 
-    // Select
-    $options = [
-        ['label' => 'Opção 1', 'value' => '1'],
-        ['label' => 'Opção 2', 'value' => '2']
-    ];
-    formUI\Select($options, ['id' => 'selecao']);
+        // Select
+        $options = [
+            ['label' => 'Opção 1', 'value' => '1'],
+            ['label' => 'Opção 2', 'value' => '2']
+        ];
+        formUI\Select($options, ['id' => 'selecao']);
 
-    // Checkbox
-    formUI\Checkbox([
-        'id' => 'termos',
-        'label' => 'Aceito os termos'
-    ]);
-    ?>
-</form>
+        // Checkbox
+        formUI\Checkbox([
+            'id' => 'termos',
+            'label' => 'Aceito os termos'
+        ]);
+        ?>
+    </form>
+    <script src="/assets/scripts/form.js"></script>
+</body>
+</html>
 ```
 
 ## Componentes Disponíveis
