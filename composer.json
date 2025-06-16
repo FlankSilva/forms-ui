@@ -1,0 +1,20 @@
+{
+  "name": "cenariodev/new-forms-ui",
+  "description": "Componentes de formulário PHP com validação e interatividade no lado do cliente.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+      {
+          "name": "Flank Silva",
+          "email": "flank.silva@cenariocapital.com.br"
+      }
+  ],
+  "require": {
+      "php": ">=7.4"
+  },
+  "autoload": {
+      "files": [
+          "src/components.php"
+      ]
+  }
+}
