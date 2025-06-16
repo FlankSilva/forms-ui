@@ -1,6 +1,11 @@
-# CenarioDev Form-UI
+# New Forms UI
 
-Biblioteca de componentes de formulário PHP com validação e interatividade no lado do cliente.
+Uma biblioteca PHP moderna para criação de formulários interativos com validação no lado do cliente.
+
+## Requisitos
+
+- PHP >= 7.4
+- Composer
 
 ## Instalação
 
@@ -8,76 +13,227 @@ Biblioteca de componentes de formulário PHP com validação e interatividade no
 composer require cenariodev/new-forms-ui
 ```
 
-## Configuração Obrigatória
+## Configuração
 
-Este pacote requer que os arquivos de **CSS, JavaScript e Imagens** sejam acessíveis publicamente.
-
-**1. Copie a pasta `assets`:**
-
-Copie toda a pasta `assets` de `vendor/cenariodev/new-forms-ui/assets` para uma pasta pública do seu projeto. Uma boa prática é criar uma pasta para assets de pacotes, por exemplo: `public/vendor/form-ui/`.
-
-**Após copiar, você terá a seguinte estrutura no seu projeto:**
-
-```
-public/
-└── vendor/
-    └── form-ui/
-        ├── css/
-        │   └── form.css
-        ├── js/
-        │   └── seu-arquivo-de-validacao.js
-        └── images/
-            └── ...
-```
-
-**2. Inclua o CSS e o JavaScript no seu HTML:**
-
-Adicione as tags `<link>` e `<script>` no seu template. O `<link>` vai no `<head>` e o `<script>` geralmente vai antes de fechar a tag `</body>`.
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Meu Formulário</title>
-    <!-- PASSO 2a: Inclua o CSS do pacote -->
-    <link rel="stylesheet" href="/vendor/form-ui/css/form.css" />
-  </head>
-  <body>
-    <!-- Seus componentes PHP aqui -->
-
-    <!-- PASSO 2b: Inclua o JavaScript do pacote -->
-    <script src="/vendor/form-ui/js/seu-arquivo-de-validacao.js"></script>
-  </body>
-</html>
-```
-
-**3. Configure o Caminho dos Assets no PHP:**
-
-Antes de chamar qualquer componente, configure o caminho para a pasta de assets que você copiou, para que os componentes possam encontrar as **imagens**.
+Antes de usar os componentes, você precisa configurar o caminho para os assets:
 
 ```php
 <?php
 require 'vendor/autoload.php';
 
-// O caminho aqui NÃO inclui a pasta /images
-\CenarioDev\formUI\configure([
-    'asset_path' => '/vendor/form-ui'
+use CenarioDev\formUI;
+
+// Configure o caminho para os assets
+formUI\configure([
+    'asset_path' => '/caminho/para/assets'
 ]);
-?>
 ```
 
-## Uso
+## Assets Necessários
 
-Agora você pode usar os componentes normalmente.
+A biblioteca requer alguns assets para funcionar corretamente. Você precisa copiar a pasta `assets` do pacote para seu diretório público. A estrutura deve ser:
+
+```
+public/
+  assets/
+    images/
+      checked.webp
+      error.webp
+      arrow.webp
+```
+
+## Início Rápido
 
 ```php
 <?php
-use function CenarioDev\formUI\Input;
+require 'vendor/autoload.php';
 
-Input([
-    'id' => 'meu-cpf',
-    'placeholder' => 'Digite seu CPF',
-    'typeValidate' => 'cpf'
+use CenarioDev\formUI;
+
+// Configure os assets
+formUI\configure([
+    'asset_path' => '/assets'
 ]);
+
+// Exemplo de formulário básico
 ?>
+<form>
+    <?php
+    // Input de texto
+    formUI\Input([
+        'id' => 'nome',
+        'placeholder' => 'Digite seu nome',
+        'typeValidate' => 'text',
+        'typeInput' => 'text'
+    ]);
+
+    // Select
+    $options = [
+        ['label' => 'Opção 1', 'value' => '1'],
+        ['label' => 'Opção 2', 'value' => '2']
+    ];
+    formUI\Select($options, ['id' => 'selecao']);
+
+    // Checkbox
+    formUI\Checkbox([
+        'id' => 'termos',
+        'label' => 'Aceito os termos'
+    ]);
+    ?>
+</form>
 ```
+
+## Componentes Disponíveis
+
+### Input
+
+Componente de entrada de texto com validação e feedback visual.
+
+#### Validações Suportadas
+
+- `text`: Texto livre
+- `email`: Endereço de e-mail
+- `cpf`: CPF
+- `cnpj`: CNPJ
+- `phone`: Telefone
+- `cep`: CEP (com busca de endereço)
+- `date`: Data
+- `number`: Números
+- `password`: Senha
+
+```php
+<?php
+formUI\Input([
+    'id' => 'nome',
+    'placeholder' => 'Digite seu nome',
+    'typeValidate' => 'text',
+    'typeInput' => 'text',
+    'textError' => 'Campo obrigatório',
+    'classContainer' => 'custom-container',
+    'classContent' => 'custom-content',
+    'classInput' => 'custom-input',
+    'classIconError' => 'custom-icon',
+    'classTextError' => 'custom-error',
+    'iconLittleFace' => true
+]);
+```
+
+### Select
+
+Componente de seleção com opções personalizáveis.
+
+```php
+<?php
+$options = [
+    ['label' => 'Opção 1', 'value' => '1', 'status' => false],
+    ['label' => 'Opção 2', 'value' => '2', 'status' => false]
+];
+
+formUI\Select($options, [
+    'id' => 'selecao',
+    'colorIcon' => '#000',
+    'colorText' => '#000',
+    'colorPlaceholder' => '#BCBCBC',
+    'textError' => 'Selecione uma opção',
+    'classDisplayContainer' => 'custom-container',
+    'classSelect' => 'custom-select',
+    'classOption' => 'custom-option',
+    'classTextError' => 'custom-error',
+    'iconLittleFace' => true
+]);
+```
+
+### Checkbox
+
+Componente de checkbox com validação.
+
+```php
+<?php
+formUI\Checkbox([
+    'id' => 'termos',
+    'label' => 'Aceito os termos de uso',
+    'checked' => false,
+    'textError' => 'Você precisa aceitar os termos',
+    'classTextError' => 'custom-error',
+    'iconLittleFace' => true
+]);
+```
+
+### RadioRestriction (Sim/Não)
+
+Componente de seleção Sim/Não com estilo personalizado.
+
+```php
+<?php
+formUI\RadioRestriction([
+    'id' => 'confirmacao',
+    'textError' => 'Selecione uma opção',
+    'bgColor' => '#fff',
+    'color' => '#bcbcbc',
+    'bgColorHoverButton' => '#f88430',
+    'colorTextHoverButton' => '#fff',
+    'borderColor' => 'gray',
+    'classContentButton' => 'custom-container',
+    'classButton' => 'custom-button',
+    'classTextError' => 'custom-error'
+]);
+```
+
+## Estilização
+
+Os componentes podem ser estilizados usando CSS. Aqui está um exemplo básico:
+
+```css
+/* Estilo para inputs */
+.input-dynamic-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%;
+}
+
+/* Estilo para mensagens de erro */
+.text-error-dynamic-input {
+  color: #ff0000;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Estilo para o container do select */
+.container-select-dynamic-select {
+  position: relative;
+  width: 100%;
+}
+
+/* Estilo para os botões Sim/Não */
+.button-dynamic-button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button-dynamic-button:hover {
+  background: #f88430;
+  color: #fff;
+}
+```
+
+## Características
+
+- Validação em tempo real
+- Feedback visual com ícones
+- Estilização personalizável
+- Suporte a máscaras de entrada
+- Validação de CEP com busca de endereço
+- Componentes responsivos
+- Suporte a temas personalizados
+
+## Contribuição
+
+Contribuições são bem-vindas! Por favor, leia o arquivo CONTRIBUTING.md para detalhes sobre nosso código de conduta e o processo para enviar pull requests.
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE.md para detalhes.
